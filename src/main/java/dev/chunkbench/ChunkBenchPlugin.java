@@ -43,20 +43,24 @@ public final class ChunkBenchPlugin extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("spark") == null) { p.sendMessage("Spark is not installed."); return true; }
         if (running.containsKey(p.getUniqueId())) { p.sendMessage("Already running. Use /" + label + " stop."); return true; }
 
-        int interval, radius, y;
+        int parsedInterval, parsedRadius, parsedY;
         try {
-            interval = a.length > 1 ? Integer.parseInt(a[1]) : 10;
-            radius = a.length > 2 ? Integer.parseInt(a[2]) : 3000;
-            y = a.length > 3 ? Integer.parseInt(a[3]) : 250;
+            parsedInterval = a.length > 1 ? Integer.parseInt(a[1]) : 10;
+            parsedRadius = a.length > 2 ? Integer.parseInt(a[2]) : 3000;
+            parsedY = a.length > 3 ? Integer.parseInt(a[3]) : 250;
         } catch (NumberFormatException e) { p.sendMessage("Numbers only."); return true; }
-        interval = Math.max(3, interval);
+
+        // Final copies, because lambdas can only capture variables that are never reassigned.
+        final int every = Math.max(3, parsedInterval);
+        final int rad = parsedRadius;
+        final int yy = parsedY;
 
         running.put(p.getUniqueId(), new Run(p.isInvulnerable()));
         p.setInvulnerable(true);                       // landing in terrain or falling should not kill the test
-        p.sendMessage("Benchmark starting: 8 stops, " + interval + "s apart, radius " + radius + ", y " + y
-                + ". Total about " + (8 * interval + 32) + "s.");
+        p.sendMessage("Benchmark starting: 8 stops, " + every + "s apart, radius " + rad + ", y " + yy
+                + ". Total about " + (8 * every + 32) + "s.");
         runCommand(p, "spark profiler start");
-        schedule(p, 40, () -> step(p, 0, interval, radius, y));   // 2s head start so the profiler is running
+        schedule(p, 40, () -> step(p, 0, every, rad, yy));   // 2s head start so the profiler is running
         return true;
     }
 
