@@ -1,0 +1,14 @@
+name: ChunkBench
+main: dev.chunkbench.ChunkBenchPlugin
+version: 1.0.0
+api-version: '26.2'
+folia-supported: true
+softdepend: [spark, ChunkGuard]
+commands:
+  chunkbench:
+    description: Run the repeatable teleport benchmark
+    usage: /chunkbench <start [intervalSeconds] [radius] [y] | stop>
+    aliases: [cb]
+permissions:
+  chunkbench.run:
+    default: op
