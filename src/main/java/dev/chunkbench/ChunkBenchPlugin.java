@@ -40,7 +40,7 @@ public final class ChunkBenchPlugin extends JavaPlugin {
             return true;
         }
         if (!sub.equals("start")) { p.sendMessage("Usage: /" + label + " start [intervalSeconds] [radius] [y] | stop"); return true; }
-        if (Bukkit.getPluginManager().getPlugin("spark") == null) { p.sendMessage("Spark is not installed."); return true; }
+                if (Bukkit.getCommandMap().getCommand("spark") == null) { p.sendMessage("The /spark command was not found."); return true; }
         if (running.containsKey(p.getUniqueId())) { p.sendMessage("Already running. Use /" + label + " stop."); return true; }
 
         int parsedInterval, parsedRadius, parsedY;
